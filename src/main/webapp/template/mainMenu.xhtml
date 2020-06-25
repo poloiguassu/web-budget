@@ -120,6 +120,12 @@
                         #{menu['financial.credit-card-invoices']}
                     </p:link>
                 </li>
+                <li jsf:rendered="#{userSessionBean.isPermitted(permissions.PERIOD_MOVEMENT_ACCESS)}">
+                    <p:link outcome="/secured/financial/movement/period/reportPeriodMovements.xhtml">
+                        <i class="fa fa-chart-pie" />
+                        #{menu['financial.reports.period']}
+                    </p:link>
+                </li>
             </ul>
         </li>
 
