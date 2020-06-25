@@ -22,13 +22,16 @@ import br.com.webbudget.domain.entities.financial.Apportionment;
 import br.com.webbudget.domain.entities.financial.Apportionment_;
 import br.com.webbudget.domain.entities.financial.PeriodMovement;
 import br.com.webbudget.domain.entities.financial.PeriodMovement_;
+import br.com.webbudget.domain.entities.financial.Movement_;
 import br.com.webbudget.domain.entities.registration.*;
 import br.com.webbudget.domain.repositories.DefaultRepository;
 import org.apache.deltaspike.data.api.EntityGraph;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.Criteria;
+import org.primefaces.model.SortOrder;
 
+import javax.persistence.metamodel.SingularAttribute;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
@@ -199,12 +202,33 @@ public interface PeriodMovementRepository extends DefaultRepository<PeriodMoveme
      */
     default Page<PeriodMovement> findAllBy(PeriodMovementFilter filter, int start, int pageSize) {
 
+        String defaultSortField = "financialPeriod";
+        SortOrder defaultSortOrder = SortOrder.DESCENDING;
+
+        return this.findAllAndSortBy(filter, start, pageSize, defaultSortField, defaultSortOrder);
+    }
+
+    /**
+     * Use this method to find all {@link PeriodMovement} using the lazy load strategy
+     *
+     * @param filter the {@link PeriodMovementFilter}
+     * @param start starting row
+     * @param pageSize page size
+     * @return the {@link Page} filled with the {@link PeriodMovement} found
+     */
+    default Page<PeriodMovement> findAllAndSortBy(PeriodMovementFilter filter, int start, int pageSize, String sortField, SortOrder sortOrder) {
+
         final int totalRows = this.countPages(filter);
 
         final Criteria<PeriodMovement, PeriodMovement> criteria = this.buildCriteria(filter);
 
-        criteria.orderDesc(PeriodMovement_.financialPeriod);
-        criteria.orderDesc(PeriodMovement_.createdOn);
+        if (sortOrder == SortOrder.ASCENDING) {
+            criteria.orderAsc(GetSortAttribute(sortField));
+            criteria.orderAsc(PeriodMovement_.createdOn);
+        } else {
+            criteria.orderDesc(GetSortAttribute(sortField));
+            criteria.orderDesc(PeriodMovement_.createdOn);
+        }
 
         final List<PeriodMovement> data = criteria.createQuery()
                 .setFirstResult(start)
@@ -212,6 +236,38 @@ public interface PeriodMovementRepository extends DefaultRepository<PeriodMoveme
                 .getResultList();
 
         return Page.of(data, totalRows);
+    }
+
+    /**
+     * @param field
+     * @param <T>
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private static <T, R> SingularAttribute<T, R> GetSortAttribute(String field) {
+
+        if (field != null && !field.isEmpty())
+        {
+            if(field.equals("financialPeriod")) {
+                return (SingularAttribute<T, R>) PeriodMovement_.financialPeriod;
+            }
+            else if(field.equals("identification")) {
+                return (SingularAttribute<T, R>) Movement_.identification;
+            }
+            else if(field.equals("periodMovementState")) {
+                return (SingularAttribute<T, R>) PeriodMovement_.periodMovementState;
+            }
+            else if(field.equals("contactName")) {
+                return (SingularAttribute<T, R>) Movement_.contact;
+            }
+            else if (field.equals("dueDate")) {
+                return (SingularAttribute<T, R>) PeriodMovement_.dueDate;
+            }
+            else if(field.equals("valueWithDiscount")) {
+                return (SingularAttribute<T, R>) Movement_.value;
+            }
+        }
+        return (SingularAttribute<T, R>) PeriodMovement_.financialPeriod;
     }
 
     /**

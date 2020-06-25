@@ -213,7 +213,7 @@ public class PeriodMovementBean extends FormBean<PeriodMovement> implements Lazy
     @Override
     public Page<PeriodMovement> load(int first, int pageSize, String sortField, SortOrder sortOrder) {
         this.loadResume();
-        return this.periodMovementRepository.findAllBy(this.filter, first, pageSize);
+        return this.periodMovementRepository.findAllAndSortBy(this.filter, first, pageSize, sortField, sortOrder);
     }
 
     /**
