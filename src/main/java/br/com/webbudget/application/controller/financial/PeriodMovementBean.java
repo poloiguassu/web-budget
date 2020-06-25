@@ -84,6 +84,8 @@ public class PeriodMovementBean extends FormBean<PeriodMovement> implements Lazy
     @Getter
     private PeriodMovementResume periodMovementResume;
 
+    private BigDecimal summaryRowTotal;
+
     @Getter
     private FinancialPeriod currentPeriod;
 
@@ -122,6 +124,8 @@ public class PeriodMovementBean extends FormBean<PeriodMovement> implements Lazy
         this.filter = new PeriodMovementFilter();
         this.dataModel = new LazyModel<>(this);
         this.periodMovementResume = new PeriodMovementResume();
+
+        this.summaryRowTotal = new BigDecimal("0.0");
     }
 
     /**
@@ -430,5 +434,19 @@ public class PeriodMovementBean extends FormBean<PeriodMovement> implements Lazy
      */
     public String getCurrentPeriodEnd() {
         return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(this.currentPeriod.getEnd());
+    }
+
+    public BigDecimal getSummaryRowTotal() {
+        BigDecimal aux = this.summaryRowTotal ;
+        this.summaryRowTotal = BigDecimal.ZERO;
+        return aux;
+    }
+
+    public void accumulateValue(BigDecimal value)
+    {
+        if (value != null)
+        {
+            this.summaryRowTotal = value.add(this.summaryRowTotal);
+        }
     }
 }
