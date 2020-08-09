@@ -190,6 +190,14 @@ public class PeriodMovement extends Movement {
         return this.payment != null ? this.payment.getPaidValue() : this.getValue();
     }
 
+    public BigDecimal getValueWithClassType() {
+        BigDecimal valueWithDiscount = this.getValueWithDiscount();
+        if (this.isExpense()) {
+            valueWithDiscount = valueWithDiscount.multiply(new BigDecimal(-1));
+        }
+        return valueWithDiscount;
+    }
+
     /**
      * Helper method to check if this movement had discount at the payment
      *

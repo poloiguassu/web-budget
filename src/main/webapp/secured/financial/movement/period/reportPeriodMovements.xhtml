@@ -298,17 +298,17 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column sortBy="#{periodMovement.valueWithDiscount}">
+                <p:column sortBy="#{periodMovement.valueWithClassType}">
                     <f:facet name="header">
                         <h:outputText value="Valor" />
                     </f:facet>
-                    <h:outputText value="#{periodMovement.valueWithDiscount}">
+                    <h:outputText value="#{periodMovement.valueWithClassType}">
                         <f:convertNumber pattern="¤#,##0.00" currencySymbol="R$ "/>
                     </h:outputText>
                 </p:column>
 
                 <p:column visible="false" exportable="false">
-                    #{periodMovementBean.accumulateValue(periodMovement.valueWithDiscount)}
+                    #{periodMovementBean.accumulateValue(periodMovement.valueWithClassType)}
                 </p:column>
 
                 <p:summaryRow>
