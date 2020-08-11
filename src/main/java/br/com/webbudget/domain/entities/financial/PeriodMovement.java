@@ -190,6 +190,12 @@ public class PeriodMovement extends Movement {
         return this.payment != null ? this.payment.getPaidValue() : this.getValue();
     }
 
+    /**
+     * Helper method to get only the discount value returning a
+     * negative value if it's a expense
+     *
+     * @return the payment discount value with signal
+     */
     public BigDecimal getValueWithClassType() {
         BigDecimal valueWithDiscount = this.getValueWithDiscount();
         if (this.isExpense()) {
@@ -205,6 +211,13 @@ public class PeriodMovement extends Movement {
      */
     public boolean isDiscountPresent() {
         return this.payment != null && this.payment.getDiscount().compareTo(BigDecimal.ZERO) != 0;
+    }
+
+    public String getProjectName() {
+        return this.getApportionments().stream()
+                .findFirst()
+                .get()
+                .getCostCenterName();
     }
 
     /**

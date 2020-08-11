@@ -272,6 +272,13 @@
                     <h:outputText value="#{periodMovement.financialPeriod.identification}" />
                 </p:column>
 
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Projeto" />
+                    </f:facet>
+                    <h:outputText value="#{periodMovement.projectName}" />
+                </p:column>
+
                 <p:column sortBy="#{periodMovement.periodMovementState}">
                     <f:facet name="header">
                         <h:outputText value="Situação" />
@@ -312,7 +319,7 @@
                 </p:column>
 
                 <p:summaryRow>
-                    <p:column colspan="5" style="text-align:right">
+                    <p:column colspan="6" style="text-align:right">
                         <h:outputText value="Total:" />
                     </p:column>
                     <p:column>
