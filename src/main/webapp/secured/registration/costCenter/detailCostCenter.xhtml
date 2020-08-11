@@ -87,13 +87,14 @@
                                      maxlength="45"
                                      styleClass="form-control"
                                      value="#{costCenterBean.value.name}"
-                                     disabled="#{costCenterBean.viewState.editing}"/>
+                                     disabled="#{costCenterBean.viewState.detailing}"/>
                     </div>
                     <div class="form-group col-md-5">
                         <p:outputLabel for="inCostCenter"
                                        value="#{messages['cost-center.form.cost-center']}: "/>
                         <p:selectOneMenu id="inCostCenter"
                                          value="#{costCenterBean.value.parent}"
+                                         disabled="#{costCenterBean.viewState.detailing}"
                                          converter="omnifaces.SelectItemsConverter">
                             <f:selectItem itemValue="#{null}"
                                           noSelectionOption="true"
@@ -112,7 +113,8 @@
                                        decimalPlaces="2"
                                        decimalSeparator=","
                                        thousandSeparator="."
-                                       value="#{costCenterBean.value.revenuesBudget}">
+                                       value="#{costCenterBean.value.revenuesBudget}"
+                                       disabled="#{costCenterBean.viewState.detailing}">
                             <f:converter converterId="javax.faces.BigDecimal"/>
                         </p:inputNumber>
                     </div>
@@ -124,7 +126,8 @@
                                        decimalPlaces="2"
                                        decimalSeparator=","
                                        thousandSeparator="."
-                                       value="#{costCenterBean.value.expensesBudget}">
+                                       value="#{costCenterBean.value.expensesBudget}"
+                                       disabled="#{costCenterBean.viewState.detailing}">
                             <f:converter converterId="javax.faces.BigDecimal"/>
                         </p:inputNumber>
                     </div>
@@ -140,7 +143,8 @@
                         <p:inputTextarea id="inDescription"
                                          autoResize="true"
                                          styleClass="form-control"
-                                         value="#{costCenterBean.value.description}"/>
+                                         value="#{costCenterBean.value.description}"
+                                         disabled="#{costCenterBean.viewState.detailing}"/>
                     </div>
                 </div>
                 <div class="box-footer text-right">
